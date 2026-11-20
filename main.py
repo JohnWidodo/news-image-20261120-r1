@@ -93,19 +93,21 @@ def draw_hero(d, x0, y0, x1, y1):
                 if (wx + wy + i * 7) % 3 == 0:
                     d.rectangle([wx, wy, wx + 5, wy + 7],
                                 fill=(0, 229, 255) if (wx // 18) % 2 else (255, 92, 168))
-    # Jalan basah + refleksi neon (streak tipis, bukan balok).
+    # Jalan basah + refleksi neon (streak tipis meruncing, bukan balok).
     d.rectangle([x0, base, x1, y1], fill=(16, 8, 26))
     for i, c in enumerate([(255, 92, 168), (0, 229, 255), (255, 214, 130)]):
         rx = x0 + int(w * (0.20 + 0.30 * i))
-        d.rectangle([rx, base + 6, rx + 5, y1 - 8], fill=c)
+        d.rectangle([rx, base + 6, rx + 2, base + int((y1 - base) * 0.75)], fill=c)
+        d.rectangle([rx + 4, base + 6, rx + 4, base + int((y1 - base) * 0.55)], fill=c)
     # Palem kiri-kanan: batang + kipas frond menjuntai (pendek, di dalam hero).
     for px, flip in [(x0 + 30, 1), (x1 - 30, -1)]:
         tx, ty = px + flip * 12, y0 + int(h * 0.50)
         d.line([(px, base), (tx, ty)], fill=(30, 16, 40), width=6)
-        for k in range(5):
-            ex = tx + flip * int(30 - abs(k - 2) * 8)
-            ey = ty + 12 + k * 7
-            d.line([(tx, ty), (ex, ey)], fill=(24, 90, 60), width=4)
+        for k in range(6):
+            ex = tx + flip * int(34 - abs(k - 2.5) * 7)
+            ey = ty + 8 + k * 6
+            mx, my = tx + flip * (ex - tx) // 2, ty + 6 + k * 3
+            d.line([(tx, ty), (mx, my), (ex, ey)], fill=(24, 90, 60), width=3)
     # Mobil sport siluet magenta + kaca + lampu.
     mx, my = x0 + int(w * 0.44), y1 - 30
     d.polygon([(mx - 78, my), (mx - 58, my - 18), (mx - 20, my - 26),
